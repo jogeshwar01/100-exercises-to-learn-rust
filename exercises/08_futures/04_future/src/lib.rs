@@ -10,7 +10,11 @@ fn spawner() {
 }
 
 async fn example() {
-    let non_send = Rc::new(1);
     yield_now().await;
+    let non_send = Rc::new(1);
     println!("{}", non_send);
 }
+
+// An async fn is compiled into a state machine. Every .await is like a suspension point.
+// Anything that lives across an .await must be stored inside the future’s state 
+// and therefore must satisfy the same requirements as the future itself (Send, 'static, etc.).
